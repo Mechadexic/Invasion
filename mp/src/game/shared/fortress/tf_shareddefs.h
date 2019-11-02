@@ -11,6 +11,7 @@
 
 extern ConVar	inv_demo;
 extern ConVar	lod_effect_distance;
+extern ConVar	tf_shared_resources;
 
 #include "const.h"
 

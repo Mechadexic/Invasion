@@ -428,6 +428,13 @@ void CBaseTFPlayer::Spawn( void )
 		GetPlayerClass()->SetPlayerHull();
 
 	g_pGameRules->GetPlayerSpawnSpot( this );
+
+	if (tf_shared_resources.GetBool()) 
+	{
+		CTFTeam *pTeam = GetTFTeam();
+		if (pTeam != nullptr)
+			pTeam->DonateResources(this);
+	}
 }
 
 void CBaseTFPlayer::CleanupOnActStart( void )
@@ -3022,10 +3029,9 @@ void CBaseTFPlayer::DonateResources( CBaseTFPlayer *pTarget, int pCount )
 //-----------------------------------------------------------------------------
 void CBaseTFPlayer::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
-	if ( pActivator->IsPlayer() )
+	if ( tf_shared_resources.GetBool() && pActivator->IsPlayer() )
 	{
 		CBaseTFPlayer *pPlayer = static_cast<CBaseTFPlayer*>(pActivator);
-
 		if ( InSameTeam( pActivator ))
 			// Resource donation
 			pPlayer->DonateResources( this, 25 );

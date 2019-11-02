@@ -130,16 +130,22 @@ void CTargetID::Paint()
 		// Is it a player?
 		if ( IsPlayerIndex( iEntIndex ) )
 		{
+			m_sIDString[0] = 0;
+
 			if ( pPlayer->InSameTeam(pLocalPlayer) )
 			{
-				// Check distance to other player, and if the player is on the same team
-				float flDistSq = pPlayer->GetRenderOrigin().DistToSqr( pLocalPlayer->GetRenderOrigin() );
-				if ( flDistSq < PLAYER_HINT_DISTANCE_SQ )
+				if (tf_shared_resources.GetBool())
 				{
-					Q_snprintf( m_sIDString, sizeof(m_sIDString), "%s\nHealth: %.0f percent\nUse to donate resources",
-						pPlayer->GetPlayerName(), ((float)pPlayer->GetHealth() / (float)pPlayer->GetMaxHealth() ) * 100 );
+					// Check distance to other player, and if the player is on the same team
+					float flDistSq = pPlayer->GetRenderOrigin().DistToSqr(pLocalPlayer->GetRenderOrigin());
+					if (flDistSq < PLAYER_HINT_DISTANCE_SQ)
+					{
+						Q_snprintf(m_sIDString, sizeof(m_sIDString), "%s\nHealth: %.0f percent\nUse to donate resources",
+							pPlayer->GetPlayerName(), ((float)pPlayer->GetHealth() / (float)pPlayer->GetMaxHealth()) * 100);
+					}
 				}
-				else
+				
+				if (m_sIDString[0] == 0)
 				{
 					Q_snprintf( m_sIDString, sizeof(m_sIDString), "%s\nHealth: %.0f percent",
 						pPlayer->GetPlayerName(), ((float)pPlayer->GetHealth() / (float)pPlayer->GetMaxHealth() ) * 100 );
@@ -151,7 +157,6 @@ void CTargetID::Paint()
 			}
 			else
 			{
-				m_sIDString[0] = 0;
 				m_iLastEntIndex = 0;
 			}
 		}
