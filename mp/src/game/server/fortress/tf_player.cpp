@@ -429,7 +429,7 @@ void CBaseTFPlayer::Spawn( void )
 
 	g_pGameRules->GetPlayerSpawnSpot( this );
 
-	if (tf_shared_resources.GetBool()) 
+	if (tf_shared_resources.GetBool() && !m_bFirstTeamSpawn)
 	{
 		CTFTeam *pTeam = GetTFTeam();
 		if (pTeam != nullptr)
